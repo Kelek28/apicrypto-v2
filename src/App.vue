@@ -1,28 +1,64 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app>
+    <navbar
+      v-if="coinData"
+      :coinData="coinData"
+      @coinChange="coinChange"
+    ></navbar>
+    <v-main>
+      <welcome-page v-if="!coinDataToPass" />
+      <viewOfCoin v-if="coinDataToPass" :coinId="coinDataToPass"></viewOfCoin>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import navbar from "./components/Navbar";
+import viewOfCoin from "./components/viewOfCoin";
+import axios from "axios";
+import WelcomePage from "./components/WelcomePage.vue";
 export default {
-  name: 'App',
   components: {
-    HelloWorld
-  }
-}
-</script>
+    navbar,
+    WelcomePage,
+    viewOfCoin,
+  },
+  data: () => ({
+    coinDataToPass: null,
+    coinsStart: [
+      "bitcoin",
+      "litecoin",
+      "ethereum",
+      "cardano",
+      "uniswap",
+      "tether",
+      "polkadot",
+      "ripple",
+      "chainlink",
+      "bitcoin-cash",
+    ],
+    coinData: [{ name: " Welcome", id: "welcome", icon: "mdi-human-greeting" }],
+  }),
+  methods: {
+    coinChange(value) {
+      this.coinDataToPass = null;
+      if (value !== "welcome") {
+        this.coinDataToPass = value;
+      }
+    },
+  },
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+  mounted() {
+    for (let i = 0; i < this.coinsStart.length; i++) {
+      axios
+        .get(
+          `https://api.coingecko.com/api/v3/coins/${this.coinsStart[i]}?localization=false&tickers=true&market_data=true&community_data=false&developer_data=false&sparkline=true`
+        )
+        .then((res) => {
+          this.coinData.push(res.data);
+        })
+        .catch((err) => console.log(err));
+    }
+  },
+};
+</script>
