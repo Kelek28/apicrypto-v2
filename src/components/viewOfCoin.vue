@@ -5,7 +5,7 @@
     class="grey lighten-5"
     fill-height
     id="viewCoin"
-    v-if="coinData"
+    v-if="loaded"
   >
     <v-row>
       <v-col cols="12" sm="5">
@@ -32,10 +32,7 @@
                 lg="3"
               >
                 <v-card v-if="item.data">
-                  <v-card-title
-                    class="subheading font-weight-bold"
-                    :class="UpOrDown"
-                  >
+                  <v-card-title :class="UpOrDown">
                     {{ item.name }}
                   </v-card-title>
 
@@ -43,7 +40,7 @@
 
                   <v-list dense>
                     <v-list-item>
-                      <v-list-item-content class="align-end">
+                      <v-list-item-content>
                         {{ item.data }}
                       </v-list-item-content>
                     </v-list-item>
@@ -73,6 +70,7 @@ export default {
   },
   data() {
     return {
+      loaded: false,
       itemsPerPage: 12,
       coinData: {},
       options: {
@@ -208,8 +206,8 @@ export default {
           `https://api.coingecko.com/api/v3/coins/${this.coinId}?localization=false&tickers=true&market_data=true&community_data=false&developer_data=false&sparkline=true`
         )
         .then((res) => {
-          // console.log(res.data.market_data.current_price.usd);
           this.coinData = res.data;
+          this.loaded = true;
         })
         .catch((err) => console.log(err));
     },

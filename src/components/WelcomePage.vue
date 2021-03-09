@@ -4,21 +4,27 @@
       <v-card class="mx-auto" outlined>
         <v-list-item three-line>
           <v-list-item-content>
-            <div class="overline mb-4">OVERLINE</div>
             <v-list-item-title class="headline mb-1">
-              Headline 5
+              Hello!
             </v-list-item-title>
-            <v-list-item-subtitle
-              >Greyhound divisely hello coldly
-              fonwderfully</v-list-item-subtitle
-            >
+            <p>
+              This is just a welcome page there is nothing intresting here.
+              Check drawer on the left to explore or click the button below to
+              check out the code
+            </p>
           </v-list-item-content>
-
-          <v-list-item-avatar tile size="80" color="grey"></v-list-item-avatar>
         </v-list-item>
 
         <v-card-actions>
-          <v-btn outlined rounded text> Button </v-btn>
+          <v-btn
+            href="https://github.com/Kelek28/apicrypto-v2"
+            target="blank"
+            rounded
+            color="primary"
+          >
+            <v-icon> mdi-github </v-icon>
+            Get code
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-col>

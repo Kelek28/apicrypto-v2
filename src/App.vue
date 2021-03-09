@@ -1,11 +1,13 @@
 <template>
   <v-app>
     <navbar
-      v-if="coinData"
+      v-if="coinData && !isFormOpen"
       :coinData="coinData"
       @coinChange="coinChange"
+      @deleteCoinId="deleteCoinId"
+      @addCoinId="addCoinId"
     ></navbar>
-    <v-main>
+    <v-main v-if="!isFormOpen">
       <welcome-page v-if="!coinDataToPass" />
       <viewOfCoin v-if="coinDataToPass" :coinId="coinDataToPass"></viewOfCoin>
     </v-main>
@@ -24,6 +26,7 @@ export default {
     viewOfCoin,
   },
   data: () => ({
+    isFormOpen: false,
     coinDataToPass: null,
     coinsStart: [
       "bitcoin",
@@ -35,11 +38,38 @@ export default {
       "polkadot",
       "ripple",
       "chainlink",
-      "bitcoin-cash",
     ],
     coinData: [{ name: " Welcome", id: "welcome", icon: "mdi-human-greeting" }],
   }),
   methods: {
+    deleteCoinId(value) {
+      console.log(this.coinsStart);
+      this.coinsStart = this.coinsStart.filter((e) => e !== value);
+      this.coinData = this.coinData.filter(function (obj) {
+        return obj.id !== value;
+      });
+      console.log(this.coinsStart);
+    },
+    addCoinId(value) {
+      if (!this.coinsStart.includes(value) && value) {
+        this.coinsStart.push(value);
+        axios
+          .get(
+            `https://api.coingecko.com/api/v3/coins/${value}?localization=false&tickers=true&market_data=true&community_data=false&developer_data=false&sparkline=true`
+          )
+          .then((res) => {
+            this.coinData.push(res.data);
+            alert("Coin added succesfully");
+          })
+          .catch((err) => {
+            console.log(err);
+            alert("Error");
+          });
+      }
+    },
+    addCoinFormOpen() {
+      this.isFormOpen = true;
+    },
     coinChange(value) {
       this.coinDataToPass = null;
       if (value !== "welcome") {
