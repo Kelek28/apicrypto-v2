@@ -3,8 +3,8 @@
 
 Add, delete and explore rate of cryptocurrency.
 
-![](![apicrypto](https://user-images.githubusercontent.com/64982801/110532791-31849180-8115-11eb-96ad-898e9709e5b6.png)
-)
+![apicrypto](https://user-images.githubusercontent.com/64982801/110533530-fcc50a00-8115-11eb-8d7f-f284279ab4ee.png)
+
 
 ## Usage example
 
